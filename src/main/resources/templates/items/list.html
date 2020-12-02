@@ -12,12 +12,12 @@
 </head>
 <body>
 <div layout:fragment="content">
-        <div class="grid-container">
-        <ul th:each="item : ${items}">
+        <div class="grid-container-shop">
+        <ul class="ul-free" th:each="item : ${items}">
                 <div>
             <div class="product-item">
               <li>
-                <img src="../static/images/no-image.jpg" th:src="@{images/no-images.jpg}"/>
+                <img th:src="@{${'/images/' + item.image}}"/>
               </li>
               <li class="product-wrapper"> <h3 th:text="${item.name}"> </h3>
                 </li>

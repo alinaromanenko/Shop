@@ -64,22 +64,19 @@ public class MySQLRespository implements ShopRepository {
 		item.setName(rs.getString("name"));
 		item.setDescription(rs.getString("description"));
 		item.setPrice(rs.getInt("price"));
-		File image = new File("C:\\Users\\Programming.LAPTOP-SIV4CDTS\\IdeaProjects\\shop\\target\\classes\\static\\"+rs.getString("image"));
-		item.setImage(image);
+		if(!rs.getString("image").equals("null")){
+		item.setImage(rs.getString("image"));}
+		else {
+			item.setImage("no-images.jpg");
+		}
 	}
 
 
 
 	@Override
-	public Item save(Item item) throws IOException {
-//		File image = item.getImage();
-//		byte[] bytes = Files.readAllBytes(Paths.get(image.getPath()));
-//		BufferedOutputStream stream =
-//				new BufferedOutputStream(new FileOutputStream(new File("C:\\Users\\Programming.LAPTOP-SIV4CDTS\\IdeaProjects\\shop\\target\\classes\\static\\images\\"+image.getName())));
-//		stream.write(bytes);
-//		stream.close();
+	public Item save(Item item) {
 		String query = "INSERT INTO `items`(`name`, `description`, `price`, `image`) VALUES ('" +
-				 item.getName() + "', '" + item.getDescription() + "', '" + item.getPrice() + "', '" + item.getImage() +"')";//image.getName()
+				 item.getName() + "', '" + item.getDescription() + "', '" + item.getPrice() + "', '" + item.getImage() +"')";
 		try (Statement st = con.createStatement()) {
 			st.executeUpdate(query);
 			query = "select max(id) from `items`";

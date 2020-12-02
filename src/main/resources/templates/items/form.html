@@ -7,66 +7,57 @@
 </head>
 <body>
 <h1 layout:fragment="header"></h1>
-<div layout:fragment="content"
-     class="container">
-    <form id="itemsForm"
-          th:action="@{/(form)}"
-          th:object="${item}"
-          action="#"
-          method="post">
-        <div th:if="${#fields.hasErrors('*')}"
-             class="alert alert-error">
-            <p th:each="error : ${#fields.errors('*')}"
-               th:text="${error}">
-                Validation error
-            </p>
-        </div>
-
-
-
-
-
-
-        <div class="wrapper">
-            <div>
-        <img src="../static/images/no-image.jpg" th:src="@{images/no-images.jpg}"/>
-                <label>Загрузить изображение</label>
-                <input type = "file"/>
-
+<div layout:fragment="content">
+    <div class="container">
+        <form id="itemsForm"
+              th:action="@{/(form)}"
+              th:object="${item}"
+              action="#"
+              method="post">
+            <div th:if="${#fields.hasErrors('*')}"
+                 class="alert alert-error">
+                <p th:each="error : ${#fields.errors('*')}"
+                   th:text="${error}">
+                    Validation error
+                </p>
             </div>
-            <div class="field">
-        <h3 align="left">НАЗВАНИЕ ТОВАРА</h3>
-        <input type="text"
-               th:field="*{name}"
-               th:class="${#fields.hasErrors('name')} ? 'field-error'"/>
-                <h3 align="left">ОПИСАНИЕ ТОВАРА</h3>
-                <textarea
-                        th:field="*{description}"
-                        th:class="${#fields.hasErrors('description')} ? 'field-error'"></textarea>
-        </div>
-            <div>
-                <label for="price">Цена</label>
-                <input type="number"
-                       th:field="*{price}"
-                       th:class="${#fields.hasErrors('name')} ? 'field-error'"/>
-            </div>
-            <div>
-                <div class="form-actions">
-                    <a href="list.html" th:href="@{?shop}" class="btn">Отмена</a>
-                    <input type="submit" class="btn" value="Сохранить"/>
+            <div class="grid-container">
+                <div class="grid-element">
+                    <div class="image-wrapper">
+                        <div>
+                            <img src="../static/images/no-image.jpg" th:src="@{images/no-images.jpg}"/>
+                            <p id="text-upload" onclick="document.getElementById('upload').click()">Загрузить
+                                изображение</p>
+                            <input id="upload" type="file" th:field="*{image}"
+                                   th:class="${#fields.hasErrors('name')} ? 'field-error'"/>
+                        </div>
+                    </div>
+                    <div class="price">
+                        <label for="price">Цена</label>
+                        <input type="number"
+                               th:field="*{price}"
+                               th:class="${#fields.hasErrors('name')} ? 'field-error'"/>
+                    </div>
                 </div>
+                <div class="grid-element">
+                    <h3>НАЗВАНИЕ ТОВАРА</h3>
+                    <input id="name" type="text"
+                           th:field="*{name}"
+                           th:class="${#fields.hasErrors('name')} ? 'field-error'"/>
+                    <h3>ОПИСАНИЕ ТОВАРА</h3>
+                    <textarea id="description"
+                              th:field="*{description}"
+                              th:class="${#fields.hasErrors('description')} ? 'field-error'"></textarea>
+                    <div class="form-actions">
+                        <div class="buttons"><a href="list.html" th:href="@{?shop}"><div id="cancel-button">Отмена</div></a>
+                            <div><input type="submit" id="save-button" value="Сохранить"/></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
-
-
-
-
-
-
-
-
-
-    </form>
+        </form>
+    </div>
 </div>
 </body>
 </html>

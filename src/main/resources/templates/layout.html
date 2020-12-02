@@ -1,34 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
-  <head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
     <title>Layout</title>
 
-      <link rel="stylesheet"
-            th:href="@{/css/main.css}"
-            href="../../css/main.css"/>
+    <link rel="stylesheet"
+          th:href="@{/css/main.css}"
+          href="../../css/main.css"/>
 
-  </head>
-  <body>
-  <div class="container">
-      <div class="navbar-inner">
-          <ul class="layout-ul">
-            <li class="layout-li">
-              <a th:href="@{/?create}" href="form.html" class="no-links">
-                ДОБАВИТЬ ТОВАР
-              </a>
-            </li>
+</head>
+<body>
+<div class="big-grid">
+    <div class="navbar">
+        <div class="container">
+            <div class="navigate">
+                <ul class="layout-ul">
+                    <li class="layout-li">
+                        <a th:href="@{/?create}" href="form.html" class="no-links">
+                            ДОБАВИТЬ ТОВАР
+                        </a>
+                    </li>
 
-            <li class="layout-li">
-              <a th:href="@{/?shop}" href="messages.html" class="no-links">
-                 МАГАЗИН
-              </a>
-                <div class="line"></div>
-            </li>
-          </ul>
-      </div>
-      <div layout:fragment="content" style="text-align:center;margin-top:150px;">
+                    <li class="layout-li">
+                        <a th:href="@{/?shop}" href="messages.html" class="no-links">
+                            МАГАЗИН
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="line"></div>
+    </div>
+    <div layout:fragment="content">
         ЗДЕСЬ ПОКА НИЧЕГО НЕТ
-      </div>
-  </div>
-  </body>
+    </div>
+</div>
+</body>
 </html>

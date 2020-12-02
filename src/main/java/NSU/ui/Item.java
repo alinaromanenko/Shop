@@ -32,7 +32,7 @@ public class Item {
 
 	private int price;
 
-	private File image;
+	private String image;
 
 	private Calendar created = Calendar.getInstance();
 
@@ -76,7 +76,7 @@ public class Item {
 		this.price = price;
 	}
 
-	public File getImage() { return this.image; }
+	public String getImage() { return this.image; }
 
-	public void setImage(File image) {this.image = image; }
+	public void setImage(String image) {this.image = image; }
 }
