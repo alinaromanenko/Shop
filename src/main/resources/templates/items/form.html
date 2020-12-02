@@ -2,15 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorator="layout">
-
 <head>
     <title>Добавить товар</title>
-    <link th:href="@{/css/main.css}" rel="stylesheet" href="../../css/main.css"/>
 </head>
 <body>
-
 <h1 layout:fragment="header"></h1>
-<div layout:fragment="content" class="container">
+<div layout:fragment="content"
+     class="container">
     <form id="itemsForm"
           th:action="@{/(form)}"
           th:object="${item}"
@@ -24,51 +22,51 @@
             </p>
         </div>
 
-        <table>
-            <tbody>
-            <tr>
-                <th>
-                    <img src="../static/images/no-images.jpg" width="250" height="145" style="margin-top:150px;"
-                         th:src="@{images/no-images.jpg}"/>
-                    <label for="file">Загрузить</label>
-                    <input type="file" th:class="image"/></th>
-                <th><label for="name" style="margin-right:630px;">Название</label><input type="text"
-                                                                                         th:field="*{name}"
-                                                                                         th:class="${#fields.hasErrors('name')} ? 'field-error'"/>
-                </th>
-            </tr>
-            <tr>
-                <td>
-                    <label for="price" style="margin-bottom:200px;">
-                        Цена
-                    </label>
-                    <input type="number" style="margin-top:200px;"
-                           th:field="*{price}"
-                           th:class="${#fields.hasErrors('price')} ? 'field-error'"/>
-                </td>
-                <td>
-                    <label for="description" style="margin-right:630px;margin-bottom:300px;">
-                        Описание
-                    </label>
-                    <input type="text"
-                           th:field="*{description}"
-                           th:class="${#fields.hasErrors('description')} ? 'field-error'"/>
-                </td>
-                <td>
-                    <div class="form-actions">
-                        <a href="list.html" th:href="@{?shop}" class="btn">Отмена</a>
-                    </div>
-                </td>
-                <td>
-                    <div class="form-actions"><input type="submit" value="Сохранить"/></div>
-                </td>
-            </tr>
-            </tbody>
 
 
-        </table>
+
+
+
+        <div class="wrapper">
+            <div>
+        <img src="../static/images/no-image.jpg" th:src="@{images/no-images.jpg}"/>
+                <label>Загрузить изображение</label>
+                <input type = "file"/>
+
+            </div>
+            <div class="field">
+        <h3 align="left">НАЗВАНИЕ ТОВАРА</h3>
+        <input type="text"
+               th:field="*{name}"
+               th:class="${#fields.hasErrors('name')} ? 'field-error'"/>
+                <h3 align="left">ОПИСАНИЕ ТОВАРА</h3>
+                <textarea
+                        th:field="*{description}"
+                        th:class="${#fields.hasErrors('description')} ? 'field-error'"></textarea>
+        </div>
+            <div>
+                <label for="price">Цена</label>
+                <input type="number"
+                       th:field="*{price}"
+                       th:class="${#fields.hasErrors('name')} ? 'field-error'"/>
+            </div>
+            <div>
+                <div class="form-actions">
+                    <a href="list.html" th:href="@{?shop}" class="btn">Отмена</a>
+                    <input type="submit" class="btn" value="Сохранить"/>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
     </form>
 </div>
-
 </body>
 </html>

@@ -3,10 +3,7 @@ min-width:1200px{
 width:1500px;
 }
 }
-a{
-font-size:18px;
-color:White;
-}
+
 
 ul{
 list-style-type:none;
@@ -54,7 +51,11 @@ padding:2px;
 text-decoration: none;
 text-align: center;
 padding: 14px 16px;
+font-size:18px;
+color:White;
 }
+
+
 #itemsForm{
 padding: 50px;
 position: fixed; top: 52%; left: 50%;
@@ -75,6 +76,7 @@ align-items:start;
 width:700px;
 height:200px;
 }
+
 #price{
 width:150px;
 height:20px;
@@ -93,6 +95,7 @@ text-decoration: none;
 color: #000;
 background-color:White;
 }
+
 .image{
 margin-bottom:-50px;}
 
@@ -153,4 +156,33 @@ margin: 0;
   border: 1px solid black;
   text-align: center;
   font-size: 30px;
+}
+
+.btn {
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  padding: .8em 1em calc(.8em + 3px);
+  border-radius: 3px;
+  background: #650406;
+  box-shadow: 0 -3px rgb(53,167,110) inset;
+  transition: 0.2s;
+}
+.btn:hover { background: rgb(53, 167, 110); }
+.btn:active {
+  background: rgb(33,147,90);
+  box-shadow: 0 3px rgb(33,147,90) inset;
+}
+
+.wrapper   {
+    display:grid;
+    grid-template-columns: auto auto;
+}
+
+.wrapper > div {
+padding:3em;
+}
+
+textarea {
+resize: none;
 }

@@ -25,7 +25,7 @@ public class Item {
 
 	private Long id;
 
-	@NotEmpty(message = "Name is required.")
+	@NotEmpty(message = "Введите название товара.")
 	private String name;
 
 	private String description;
