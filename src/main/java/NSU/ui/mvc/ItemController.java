@@ -70,18 +70,12 @@ public class ItemController {
 			return new ModelAndView("items/form", "formErrors", result.getAllErrors());
 		}
 		item = this.shopRepository.save(item);
-		System.out.println(item.getPrice());
 		redirect.addFlashAttribute("globalMessage", "Товар успешно создан");
-
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-		System.out.println(fileName);
-		System.out.println(file.isEmpty());
 
 		try {
 			Path path = Paths.get(UPLOAD_DIR + item.getName()+".jpg");
 			item.setImage(item.getName()+".jpg");
-			System.out.println(item.getImage());
-			System.out.println(path);
 			File convFile = new File(file.getOriginalFilename());
 			convFile.createNewFile();
 			FileOutputStream fos = new FileOutputStream(convFile);
