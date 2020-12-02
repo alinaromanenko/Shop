@@ -64,7 +64,7 @@ public class MySQLRespository implements ShopRepository {
 		item.setName(rs.getString("name"));
 		item.setDescription(rs.getString("description"));
 		item.setPrice(rs.getInt("price"));
-		if(!rs.getString("image").equals("null")){
+		if(!rs.getString("image").equals("")){
 		item.setImage(rs.getString("image"));}
 		else {
 			item.setImage("no-images.jpg");
