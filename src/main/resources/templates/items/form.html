@@ -9,7 +9,7 @@
 <h1 layout:fragment="header"></h1>
 <div layout:fragment="content">
     <div class="container">
-        <form id="itemsForm"
+        <form id="itemsForm" enctype="multipart/form-data"
               th:action="@{/(form)}"
               th:object="${item}"
               action="#"
@@ -28,8 +28,7 @@
                             <img src="../static/images/no-image.jpg" th:src="@{images/no-images.jpg}"/>
                             <p id="text-upload" onclick="document.getElementById('upload').click()">Загрузить
                                 изображение</p>
-                            <input id="upload" type="file" th:field="*{image}"
-                                   th:class="${#fields.hasErrors('name')} ? 'field-error'"/>
+                            <input type="file" name="file" id = "upload" class="form-control-file"/>
                         </div>
                     </div>
                     <div class="price">

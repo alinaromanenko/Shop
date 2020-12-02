@@ -16,9 +16,6 @@
 
 package NSU.ui;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -64,10 +61,11 @@ public class MySQLRespository implements ShopRepository {
 		item.setName(rs.getString("name"));
 		item.setDescription(rs.getString("description"));
 		item.setPrice(rs.getInt("price"));
-		if(!rs.getString("image").equals("")){
-		item.setImage(rs.getString("image"));}
-		else {
+		if(rs.getString("image").equals("") || rs.getString("image").equals("null")){
 			item.setImage("no-images.jpg");
+		}
+		else {
+			item.setImage(rs.getString("image"));
 		}
 	}
 
@@ -75,6 +73,7 @@ public class MySQLRespository implements ShopRepository {
 
 	@Override
 	public Item save(Item item) {
+        item.setImage(item.getName()+".jpg");
 		String query = "INSERT INTO `items`(`name`, `description`, `price`, `image`) VALUES ('" +
 				 item.getName() + "', '" + item.getDescription() + "', '" + item.getPrice() + "', '" + item.getImage() +"')";
 		try (Statement st = con.createStatement()) {

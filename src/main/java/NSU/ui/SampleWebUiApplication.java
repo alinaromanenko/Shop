@@ -18,11 +18,13 @@ package NSU.ui;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.embedded.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 
+import javax.servlet.MultipartConfigElement;
 import java.sql.SQLException;
 
 @Configuration
@@ -50,9 +52,16 @@ public class SampleWebUiApplication {
 		};
 	}
 
+	@Bean
+	public MultipartConfigElement multipartConfigElement() {
+		MultipartConfigFactory factory = new MultipartConfigFactory();
+		factory.setMaxFileSize("5242880");
+		factory.setMaxRequestSize("5242880");
+		return factory.createMultipartConfig();
+	}
+
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(SampleWebUiApplication.class, args);
-
 	}
 
 }
