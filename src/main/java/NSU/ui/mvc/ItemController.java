@@ -15,16 +15,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import NSU.ui.ShopRepository;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 /**
  * @author Rob Winch
@@ -33,6 +29,8 @@ import java.nio.file.StandardCopyOption;
 @RequestMapping("/")
 public class ItemController {
 	private final ShopRepository shopRepository;
+	private final String UPLOAD_DIR = "target/classes/static/images/";
+
 
 	@Autowired
 	public ItemController(ShopRepository shopRepository) {
@@ -55,16 +53,14 @@ public class ItemController {
 		return new ModelAndView("items/view", "item", item);
 	}
 
-
-
 	@RequestMapping(params = "create", method = RequestMethod.GET)
 	public String createForm(@ModelAttribute Item item) {
 		return "items/form";
 	}
 
-	private final String UPLOAD_DIR = "target/classes/static/images/";
+
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView create(@Valid Item item, @RequestParam("file") MultipartFile file, BindingResult result,
+	public ModelAndView create(@Valid Item item, BindingResult result, @RequestParam("file") MultipartFile file,
 							   RedirectAttributes redirect) throws IOException {
 		if (result.hasErrors()) {
 			return new ModelAndView("items/form", "formErrors", result.getAllErrors());
@@ -72,26 +68,19 @@ public class ItemController {
 		item = this.shopRepository.save(item);
 		redirect.addFlashAttribute("globalMessage", "Товар успешно создан");
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
-		try {
-			Path path = Paths.get(UPLOAD_DIR + item.getName()+".jpg");
-			item.setImage(item.getName()+".jpg");
-			File convFile = new File(file.getOriginalFilename());
-			convFile.createNewFile();
-			FileOutputStream fos = new FileOutputStream(convFile);
-			fos.write(file.getBytes());
-			fos.close();
-
-			BufferedImage image = ImageIO.read(convFile);
-			File output = new File(String.valueOf(path));
-			ImageIO.write(image, "jpg", output);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		Path path = Paths.get(UPLOAD_DIR + item.getName()+".jpg");
+		item.setImage(item.getName()+".jpg");
+		File convFile = new File(file.getOriginalFilename());
+		convFile.createNewFile();
+		FileOutputStream fos = new FileOutputStream(convFile);
+		fos.write(file.getBytes());
+		fos.close();
+		BufferedImage image = ImageIO.read(convFile);
+		File output = new File(String.valueOf(path));
+		ImageIO.write(image, "jpg", output);
 		return new ModelAndView("redirect:/{item.id}", "item.id", item.getId());
 	}
+
 	@RequestMapping("foo")
 	public String foo() {
 		throw new RuntimeException("Expected exception in controller");

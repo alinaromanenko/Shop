@@ -11,22 +11,29 @@
           href="../../css/main.css"/>
 </head>
 <body>
-<div layout:fragment="content">
-        <div class="grid-container-shop">
-        <ul class="ul-free" th:each="item : ${items}">
-                <div>
-            <div class="product-item">
-              <li>
-                <img th:src="@{${'/images/' + item.image}}"/>
-              </li>
-              <li class="product-wrapper"> <h3 th:text="${item.name}"> </h3>
-                </li>
-                <li class="price" th:text="${item.price}+' RUB'">
-                </li>
-            </div>
+<div layout:fragment="content"><div th:if="${items.empty}">
+    <div style="text-align:center;margin-top:150px;">
+        У ВАС ПОКА НЕТ ТОВАРОВ
+    </div>
+</div>
+    <div class="grid-container-shop">
+
+        <ul class="ul-free" th:each="item : ${items}" >
+            <div>
+                <div class="product-item">
+                    <li>
+                        <img th:src="@{${'/images/' + item.image}}"/>
+                    </li>
+                    <li class="product-wrapper"> <h3 th:text="${item.name}"> </h3>
+                    </li>
+                    <li class="price" th:text="${item.price}+' RUB'">
+                    </li>
+                </div>
             </div>
         </ul>
         </div>
-</div>
+    </div>
+
+
 </body>
 </html>

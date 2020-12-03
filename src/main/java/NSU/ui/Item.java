@@ -18,6 +18,10 @@ import java.util.Calendar;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 /**
  * @author Rob Winch
  */
@@ -30,6 +34,7 @@ public class Item {
 
 	private String description;
 
+	@Min(value = 0L, message = "Цена не может быть отрицательной.")
 	private int price;
 
 	private String image;

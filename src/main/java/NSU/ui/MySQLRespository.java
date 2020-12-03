@@ -86,7 +86,6 @@ public class MySQLRespository implements ShopRepository {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(item.getPrice());
 		return item;
 	}
 
