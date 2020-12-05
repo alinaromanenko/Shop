@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Layout</title>
-
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <link rel="stylesheet"
           th:href="@{/css/main.css}"
           href="../../css/main.css"/>
@@ -33,6 +34,37 @@
     <div layout:fragment="content">
         ЗДЕСЬ ПОКА НИЧЕГО НЕТ
     </div>
+
+    <div id="footer" style="flex: 0 0 auto;">
+        <ul class="girls-ul">
+        <li class="girls-li"> &copy;   Анастасия Близняк </li>
+        <li class="girls-li"> Дарима Жамбаема </li>
+        <li class="girls-li"> Анастасия Зеленская </li>
+        <li class="girls-li"> Романенко Алина </li>
+    </ul>
+    </div>
 </div>
+
 </body>
+
+<script>
+        function readURL(input) {
+        /*<![CDATA[*/
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imageForm').attr('src', e.target.result);
+            }/*]]>*/
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#upload").change(function(){
+
+        readURL(this);
+    });
+</script>
 </html>
