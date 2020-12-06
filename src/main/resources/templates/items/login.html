@@ -19,29 +19,28 @@
             <li> <a th:href="@{/login}" href="login.html" class="no-links">ВОЙТИ</a></li>
             <li> <a th:href="@{/login}" href="login.html" class="no-links">ЗАРЕГИСТРИРОВАТЬСЯ</a></li>
         </ul>
-        <h3>Имя</h3>
-        <input type="text"
+        <input type="text" placeholder="введите имя"
                th:field="*{firstName}"
                th:class="${#fields.hasErrors('firstName')} ? 'field-error'"/>
-        <h3>Email</h3>
-        <input type="text"
+        <br/>
+        <input type="text" placeholder="введите email"
                th:field="*{email}"
                th:class="${#fields.hasErrors('email')} ? 'field-error'"/>
-        <h3>Номер телефона</h3>
-        <input type="text"
+        <br/>
+        <input type="text" placeholder="введите номер телефона"
                th:field="*{phone}"
                th:class="${#fields.hasErrors('phone')} ? 'field-error'"/>
-        <h3>Пароль</h3>
-        <input  type="text"
+        <br/>
+        <input  type="text" placeholder="введите пароль"
                 th:field="*{password}"
                 th:class="${#fields.hasErrors('password')} ? 'field-error'"/>
 
-    <br/>
-        <input type="checkbox" />Продавец
+        <br/>
+        <input type="checkbox" /> продавец
 
 
         <div class="form-actions">
-            <div><input type="submit"  value="Сохранить"/></div>
+            <div><input type="submit"  value="ЗАРЕГИСТРИРОВАТЬСЯ"/></div>
         </div>
 
     </form>
