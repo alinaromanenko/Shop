@@ -11,6 +11,7 @@
           href="../../css/main.css"/>
 </head>
 <body>
+<div class="container">
 <div layout:fragment="content"><div th:if="${items.empty}">
     <div style="text-align:center;margin-top:150px;">
         У ВАС ПОКА НЕТ ТОВАРОВ
@@ -22,6 +23,7 @@
             <div>
                 <div class="product-item">
                     <li>
+
                         <img th:src="@{${'/images/' + item.image}}"/>
                     </li>
                     <li class="product-wrapper"> <h3 th:text="${item.name}"> </h3>
@@ -34,6 +36,6 @@
         </div>
     </div>
 
-
+</div>
 </body>
 </html>

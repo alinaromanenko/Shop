@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.validation.Valid;
 
 import NSU.ui.Item;
+import NSU.ui.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -58,28 +59,50 @@ public class ItemController {
 		return "items/form";
 	}
 
+	@RequestMapping(value = "login", method = RequestMethod.GET)
+	public String loginEnter(@ModelAttribute Person person) {
+		return "items/login";
+	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "login", method = RequestMethod.POST)
+	public ModelAndView create(@Valid Person person, BindingResult result,
+							   RedirectAttributes redirect) throws IOException {
+		if (result.hasErrors()) {
+			return new ModelAndView("items/form", "formErrors", result.getAllErrors());
+		}
+		System.out.println(person.getSeller());
+		person = this.shopRepository.savePerson(person);
+		redirect.addFlashAttribute("globalMessage", "Вы успешно зарегистрированы.");
+		return null;
+	}
+
+	@RequestMapping(params = "form" , method = RequestMethod.POST)
 	public ModelAndView create(@Valid Item item, BindingResult result, @RequestParam("file") MultipartFile file,
 							   RedirectAttributes redirect) throws IOException {
 		if (result.hasErrors()) {
 			return new ModelAndView("items/form", "formErrors", result.getAllErrors());
 		}
+		if (file.isEmpty()) {
+			item.setImage("no-image.png");
+		}
+		else {
+			item.setImage(item.getName()+".jpg");
+			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+			Path path = Paths.get(UPLOAD_DIR + item.getName()+".jpg");
+			File convFile = new File(file.getOriginalFilename());
+			convFile.createNewFile();
+			FileOutputStream fos = new FileOutputStream(convFile);
+			fos.write(file.getBytes());
+			fos.close();
+			BufferedImage image = ImageIO.read(convFile);
+			File output = new File(String.valueOf(path));
+			ImageIO.write(image, "jpg", output);
+		}
 		item = this.shopRepository.save(item);
 		redirect.addFlashAttribute("globalMessage", "Товар успешно создан");
-		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-		Path path = Paths.get(UPLOAD_DIR + item.getName()+".jpg");
-		item.setImage(item.getName()+".jpg");
-		File convFile = new File(file.getOriginalFilename());
-		convFile.createNewFile();
-		FileOutputStream fos = new FileOutputStream(convFile);
-		fos.write(file.getBytes());
-		fos.close();
-		BufferedImage image = ImageIO.read(convFile);
-		File output = new File(String.valueOf(path));
-		ImageIO.write(image, "jpg", output);
 		return new ModelAndView("redirect:/{item.id}", "item.id", item.getId());
 	}
+
 
 	@RequestMapping("foo")
 	public String foo() {

@@ -27,4 +27,5 @@ public interface ShopRepository {
 
 	Item findItem(Long id);
 
+    Person savePerson(Person person);
 }

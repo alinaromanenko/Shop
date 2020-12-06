@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+<head>
+    <title>Регистрация</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/login.css}"
+          href="../../css/login.css"/>
+
+</head>
+
+<body>
+    <h1 style="text-align:center;">ВОЙДИТЕ В СИСТЕМУ</h1>
+    <div class="main-block">
+    <form th:object="${person}" th:action="@{/login}" method="post" >
+        <ul>
+            <li> <a th:href="@{/login}" href="login.html" class="no-links">ВОЙТИ</a></li>
+            <li> <a th:href="@{/login}" href="login.html" class="no-links">ЗАРЕГИСТРИРОВАТЬСЯ</a></li>
+        </ul>
+        <h3>Имя</h3>
+        <input type="text"
+               th:field="*{firstName}"
+               th:class="${#fields.hasErrors('firstName')} ? 'field-error'"/>
+        <h3>Email</h3>
+        <input type="text"
+               th:field="*{email}"
+               th:class="${#fields.hasErrors('email')} ? 'field-error'"/>
+        <h3>Номер телефона</h3>
+        <input type="text"
+               th:field="*{phone}"
+               th:class="${#fields.hasErrors('phone')} ? 'field-error'"/>
+        <h3>Пароль</h3>
+        <input  type="text"
+                th:field="*{password}"
+                th:class="${#fields.hasErrors('password')} ? 'field-error'"/>
+
+    <br/>
+        <input type="checkbox" />Продавец
+
+
+        <div class="form-actions">
+            <div><input type="submit"  value="Сохранить"/></div>
+        </div>
+
+    </form>
+    </div>
+</body>
+</html>

@@ -61,19 +61,13 @@ public class MySQLRespository implements ShopRepository {
 		item.setName(rs.getString("name"));
 		item.setDescription(rs.getString("description"));
 		item.setPrice(rs.getInt("price"));
-		if(rs.getString("image").equals("") || rs.getString("image").equals("null")){
-			item.setImage("no-images.jpg");
-		}
-		else {
-			item.setImage(rs.getString("image"));
-		}
+		item.setImage(rs.getString("image"));
 	}
 
 
 
 	@Override
 	public Item save(Item item) {
-        item.setImage(item.getName()+".jpg");
 		String query = "INSERT INTO `items`(`name`, `description`, `price`, `image`) VALUES ('" +
 				 item.getName() + "', '" + item.getDescription() + "', '" + item.getPrice() + "', '" + item.getImage() +"')";
 		try (Statement st = con.createStatement()) {
@@ -89,6 +83,22 @@ public class MySQLRespository implements ShopRepository {
 		return item;
 	}
 
+	@Override
+	public Person savePerson(Person person){
+		String query = "INSERT INTO `person`(`first_name`, `email`, `phone`, `password`) VALUES ('" +
+				person.getFirstName() + "', '" + person.getEmail() + "', '" + person.getPhone() + "', '" + person.getPassword() +"')";
+		try (Statement st = con.createStatement()) {
+			st.executeUpdate(query);
+			query = "select max(id) from `items`";
+			try (ResultSet rsId = st.executeQuery(query)) {
+				rsId.next();
+				person.setId(rsId.getLong(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return person;
+	}
 
 	@Override
 	public Item findItem(Long id) {
