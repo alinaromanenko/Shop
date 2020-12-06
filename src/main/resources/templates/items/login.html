@@ -12,38 +12,72 @@
 </head>
 
 <body>
-    <h1 style="text-align:center;">ВОЙДИТЕ В СИСТЕМУ</h1>
-    <div class="main-block">
-    <form th:object="${person}" th:action="@{/login}" method="post" >
-        <ul>
-            <li> <a th:href="@{/login}" href="login.html" class="no-links">ВОЙТИ</a></li>
-            <li> <a th:href="@{/login}" href="login.html" class="no-links">ЗАРЕГИСТРИРОВАТЬСЯ</a></li>
-        </ul>
-        <input type="text" placeholder="введите имя"
+<h1 style="text-align:center;">ВОЙДИТЕ В СИСТЕМУ</h1>
+
+<div class="main-block">
+    <ul>
+        <li><a id="log" class="no-links">ВОЙТИ</a></li>
+        <li><a id="enter" class="no-links">ЗАРЕГИСТРИРОВАТЬСЯ</a></li>
+    </ul>
+    <form id="sign-up" th:object="${person}" th:action="@{/login}" method="post">
+
+        <input th:required="required" type="text" placeholder="введите имя"
                th:field="*{firstName}"
                th:class="${#fields.hasErrors('firstName')} ? 'field-error'"/>
         <br/>
+        <input th:required="required" type="text" placeholder="введите email"
+               th:field="*{email}"
+               th:class="${#fields.hasErrors('email')} ? 'field-error'"/>
+        <br/>
+        <input th:required="required" type="text" placeholder="введите номер телефона"
+               th:field="*{phone}"
+               th:class="${#fields.hasErrors('phone')} ? 'field-error'"/>
+        <br/>
+        <input th:required="required" type="text" placeholder="введите пароль"
+               th:field="*{password}"
+               th:class="${#fields.hasErrors('password')} ? 'field-error'"/>
+
+        <br/>
+        <input type="checkbox"/> продавец
+
+
+        <div class="form-actions">
+            <div><input type="submit" value="ЗАРЕГИСТРИРОВАТЬСЯ"/></div>
+        </div>
+    </form>
+
+    <form th:required="required" id="sign-in" th:object="${person}" th:action="@{/login}" method="post">
         <input type="text" placeholder="введите email"
                th:field="*{email}"
                th:class="${#fields.hasErrors('email')} ? 'field-error'"/>
         <br/>
-        <input type="text" placeholder="введите номер телефона"
-               th:field="*{phone}"
-               th:class="${#fields.hasErrors('phone')} ? 'field-error'"/>
-        <br/>
-        <input  type="text" placeholder="введите пароль"
-                th:field="*{password}"
-                th:class="${#fields.hasErrors('password')} ? 'field-error'"/>
+        <input th:required="required" type="text" placeholder="введите пароль"
+               th:field="*{password}"
+               th:class="${#fields.hasErrors('password')} ? 'field-error'"/>
 
         <br/>
-        <input type="checkbox" /> продавец
+        <input type="checkbox"/> продавец
 
 
         <div class="form-actions">
-            <div><input type="submit"  value="ЗАРЕГИСТРИРОВАТЬСЯ"/></div>
+            <div><input type="submit" value="ВОЙТИ"/></div>
         </div>
-
     </form>
-    </div>
+
+</div>
 </body>
+
+<script>
+    document.getElementById("enter").onclick=function(){
+
+        document.getElementById("sign-in").style.display="none";
+        document.getElementById("sign-up").style.display="block";
+    }
+    document.getElementById("log").onclick=function(){
+        document.getElementById("sign-in").style.display="block";
+        document.getElementById("sign-up").style.display="none";
+    }
+
+</script>
+
 </html>

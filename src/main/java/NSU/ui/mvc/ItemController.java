@@ -43,7 +43,7 @@ public class ItemController {
 		return new ModelAndView("layout");
 	}
 
-	@RequestMapping(params = "shop")
+	@RequestMapping(value = "shop")
 	public ModelAndView list() {
 		Iterable<Item> items = this.shopRepository.findAll();
 		return new ModelAndView("items/list", "items", items);
@@ -68,12 +68,18 @@ public class ItemController {
 	public ModelAndView create(@Valid Person person, BindingResult result,
 							   RedirectAttributes redirect) throws IOException {
 		if (result.hasErrors()) {
-			return new ModelAndView("items/form", "formErrors", result.getAllErrors());
+			return new ModelAndView("items/login", "formErrors", result.getAllErrors());
 		}
-		System.out.println(person.getSeller());
-		person = this.shopRepository.savePerson(person);
+		if (person.getPhone()!=null){
+		this.shopRepository.savePerson(person);
 		redirect.addFlashAttribute("globalMessage", "Вы успешно зарегистрированы.");
-		return null;
+		return new ModelAndView("redirect:/login");
+		}
+		else{
+			//Для Даримы
+			return null;
+		}
+
 	}
 
 	@RequestMapping(params = "form" , method = RequestMethod.POST)
@@ -86,9 +92,9 @@ public class ItemController {
 			item.setImage("no-image.png");
 		}
 		else {
-			item.setImage(item.getName()+".jpg");
+			item.setImage(item.getName().hashCode()+".jpg");
 			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			Path path = Paths.get(UPLOAD_DIR + item.getName()+".jpg");
+			Path path = Paths.get(UPLOAD_DIR + item.getName().hashCode()+".jpg");
 			File convFile = new File(file.getOriginalFilename());
 			convFile.createNewFile();
 			FileOutputStream fos = new FileOutputStream(convFile);
