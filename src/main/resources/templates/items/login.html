@@ -13,7 +13,11 @@
 
 <body>
 <h1 style="text-align:center;">ВОЙДИТЕ В СИСТЕМУ</h1>
-
+<div class="alert alert-success"
+     th:if="${globalMessage}"
+     th:text="${globalMessage}">
+    Some Success registration
+</div>
 <div class="main-block">
     <ul>
         <li><a id="log" class="no-links">ВОЙТИ</a></li>
@@ -21,24 +25,28 @@
     </ul>
     <form id="sign-up" th:object="${person}" th:action="@{/login}" method="post">
 
+
+
         <input th:required="required" type="text" placeholder="введите имя"
                th:field="*{firstName}"
                th:class="${#fields.hasErrors('firstName')} ? 'field-error'"/>
         <br/>
-        <input th:required="required" type="text" placeholder="введите email"
+        <input th:required="required" type="email" placeholder="введите email"
                th:field="*{email}"
                th:class="${#fields.hasErrors('email')} ? 'field-error'"/>
         <br/>
-        <input th:required="required" type="text" placeholder="введите номер телефона"
+        <input th:required="required" type="tel"
+               placeholder="введите номер телефона"
                th:field="*{phone}"
                th:class="${#fields.hasErrors('phone')} ? 'field-error'"/>
         <br/>
-        <input th:required="required" type="text" placeholder="введите пароль"
+        <input th:required="required" type="password" placeholder="введите пароль"
                th:field="*{password}"
                th:class="${#fields.hasErrors('password')} ? 'field-error'"/>
 
         <br/>
-        <input type="checkbox"/> продавец
+        <input id="invisible" type="text" th:field="*{isSeller}"/>
+        <input id="seller" type="checkbox"/> продавец
 
 
         <div class="form-actions">
@@ -47,16 +55,15 @@
     </form>
 
     <form th:required="required" id="sign-in" th:object="${person}" th:action="@{/login}" method="post">
-        <input type="text" placeholder="введите email"
+        <input type="email" placeholder="введите email"
                th:field="*{email}"
                th:class="${#fields.hasErrors('email')} ? 'field-error'"/>
         <br/>
-        <input th:required="required" type="text" placeholder="введите пароль"
+        <input th:required="required" type="password"  placeholder="введите пароль"
                th:field="*{password}"
                th:class="${#fields.hasErrors('password')} ? 'field-error'"/>
 
         <br/>
-        <input type="checkbox"/> продавец
 
 
         <div class="form-actions">
@@ -73,9 +80,21 @@
         document.getElementById("sign-in").style.display="none";
         document.getElementById("sign-up").style.display="block";
     }
+
     document.getElementById("log").onclick=function(){
         document.getElementById("sign-in").style.display="block";
         document.getElementById("sign-up").style.display="none";
+    }
+
+    document.getElementById("invisible").value=false;
+
+    document.getElementById("seller").onchange=function(){
+    if (document.getElementById("seller").checked ){
+    document.getElementById("invisible").value=true;
+    }
+    else{
+    document.getElementById("invisible").value=false;
+    }
     }
 
 </script>

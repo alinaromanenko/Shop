@@ -7,6 +7,7 @@ import NSU.ui.Item;
 import NSU.ui.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -66,21 +67,21 @@ public class ItemController {
 
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public ModelAndView create(@Valid Person person, BindingResult result,
-							   RedirectAttributes redirect) throws IOException {
+							   RedirectAttributes redirect, Model model) throws IOException {
 		if (result.hasErrors()) {
 			return new ModelAndView("items/login", "formErrors", result.getAllErrors());
 		}
 		if (person.getPhone()!=null){
-		this.shopRepository.savePerson(person);
-		redirect.addFlashAttribute("globalMessage", "Вы успешно зарегистрированы.");
-		return new ModelAndView("redirect:/login");
-		}
-		else{
-			//Для Даримы
-			return null;
-		}
-
+			this.shopRepository.savePerson(person);
+			redirect.addFlashAttribute("globalMessage", "Вы успешно зарегистрированы.");
+			return new ModelAndView("redirect:/login");
+			}
+			else{
+				//Для Даримы
+				return null;
+			}
 	}
+
 
 	@RequestMapping(params = "form" , method = RequestMethod.POST)
 	public ModelAndView create(@Valid Item item, BindingResult result, @RequestParam("file") MultipartFile file,

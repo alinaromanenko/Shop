@@ -71,12 +71,11 @@ public class Person {
         this.password = password;
     }
 
-    public String getSeller() {
+    public String getIsSeller() {
         return isSeller;
     }
 
-    public void setSeller(String  seller) {
-        System.out.println(seller);
+    public void setIsSeller(String  seller) {
         isSeller = seller;
     }
 }
