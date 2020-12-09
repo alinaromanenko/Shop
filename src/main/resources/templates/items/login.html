@@ -35,7 +35,7 @@
                th:field="*{email}"
                th:class="${#fields.hasErrors('email')} ? 'field-error'"/>
         <br/>
-        <input th:required="required" type="tel"
+        <input th:required="required" type="number"
                placeholder="введите номер телефона"
                th:field="*{phone}"
                th:class="${#fields.hasErrors('phone')} ? 'field-error'"/>
@@ -55,19 +55,19 @@
     </form>
 
     <form th:required="required" id="sign-in" th:object="${person}" th:action="@{/login}" method="post">
-        <input type="email" placeholder="введите email"
+        <input type="email" class="email" placeholder="введите email"
                th:field="*{email}"
-               th:class="${#fields.hasErrors('email')} ? 'field-error'"/>
+               th:class="${#fields.hasErrors('email')} ? 'field-error'" style="margin-top:50px;"/>
         <br/>
         <input th:required="required" type="password"  placeholder="введите пароль"
                th:field="*{password}"
-               th:class="${#fields.hasErrors('password')} ? 'field-error'"/>
+               th:class="${#fields.hasErrors('password')} ? 'field-error'" style="margin-top:30px;"/>
 
         <br/>
 
 
         <div class="form-actions">
-            <div><input type="submit" value="ВОЙТИ"/></div>
+            <div><input type="submit" value="ВОЙТИ" style="margin-left:45%;"/></div>
         </div>
     </form>
 

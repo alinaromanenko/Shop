@@ -27,7 +27,7 @@ public class MySQLRespository implements ShopRepository {
 
     public MySQLRespository() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop?useUnicode=true&characterEncoding=utf8", "root", "pqypwz3v");
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop?useUnicode=true&characterEncoding=utf8", "root", "root");
     }
 
     public void closeConnection() {
