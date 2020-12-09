@@ -84,6 +84,15 @@ public class MySQLRespository implements ShopRepository {
 
     @Override
     public Person savePerson(Person person) {
+        String phone_query = "Select * from `person` where phone = '" + person.getPhone() + "';";
+        try (Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(phone_query)) {
+            if (rs.first()) {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         String query = "INSERT INTO `person`(`first_name`, `email`, `phone`, `password`, `seller`) VALUES ('" +
                 person.getFirstName() + "', '" + person.getEmail() + "', '" + person.getPhone() + "', '" + person.getPassword() + "', '" + person.getIsSeller() + "')";
         try (Statement st = con.createStatement()) {
@@ -98,6 +107,23 @@ public class MySQLRespository implements ShopRepository {
         }
         return person;
     }
+
+    @Override
+    public Person findPerson(Person person) {
+        System.out.println(person.getEmail());
+        System.out.println(person.getPassword());
+        String query = "select * from person where email='" + person.getEmail() + "' and password='" + person.getPassword() + "';";
+        try (Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
+            if (rs.first()) {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return person;
+    }
+
 
     @Override
     public Item findItem(Long id) {

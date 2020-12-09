@@ -30,90 +30,102 @@ import java.nio.file.Paths;
 @Controller
 @RequestMapping("/")
 public class ItemController {
-	private final ShopRepository shopRepository;
-	private final String UPLOAD_DIR = "target/classes/static/images/";
+    private final ShopRepository shopRepository;
+    private final String UPLOAD_DIR = "target/classes/static/images/";
 
 
-	@Autowired
-	public ItemController(ShopRepository shopRepository) {
-		this.shopRepository = shopRepository;
-	}
+    @Autowired
+    public ItemController(ShopRepository shopRepository) {
+        this.shopRepository = shopRepository;
+    }
 
-	@RequestMapping
-	public ModelAndView nothing(){
-		return new ModelAndView("layout");
-	}
+    @RequestMapping
+    public ModelAndView nothing() {
+        return new ModelAndView("layout");
+    }
 
-	@RequestMapping(value = "shop")
-	public ModelAndView list() {
-		Iterable<Item> items = this.shopRepository.findAll();
-		return new ModelAndView("items/list", "items", items);
-	}
+    @RequestMapping(value = "shop")
+    public ModelAndView list() {
+        Iterable<Item> items = this.shopRepository.findAll();
+        return new ModelAndView("items/list", "items", items);
+    }
 
-	@RequestMapping("{id}")
-	public ModelAndView view(@PathVariable("id") Item item) {
-		return new ModelAndView("items/view", "item", item);
-	}
+    @RequestMapping("{id}")
+    public ModelAndView view(@PathVariable("id") Item item) {
+        return new ModelAndView("items/view", "item", item);
+    }
 
-	@RequestMapping(params = "create", method = RequestMethod.GET)
-	public String createForm(@ModelAttribute Item item) {
-		return "items/form";
-	}
+    @RequestMapping(params = "create", method = RequestMethod.GET)
+    public String createForm(@ModelAttribute Item item) {
+        return "items/form";
+    }
 
-	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public String loginEnter(@ModelAttribute Person person) {
-		return "items/login";
-	}
+    @RequestMapping(value = "login", method = RequestMethod.GET)
+    public String loginEnter(@ModelAttribute Person person) {
+        return "items/login";
+    }
 
-	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public ModelAndView create(@Valid Person person, BindingResult result,
-							   RedirectAttributes redirect, Model model) throws IOException {
-		if (result.hasErrors()) {
-			return new ModelAndView("items/login", "formErrors", result.getAllErrors());
-		}
-		if (person.getPhone()!=null){
-			this.shopRepository.savePerson(person);
-			redirect.addFlashAttribute("globalMessage", "Вы успешно зарегистрированы.");
-			return new ModelAndView("redirect:/login");
-			}
-			else{
-				//Для Даримы
-				return null;
-			}
-	}
-
-
-	@RequestMapping(params = "form" , method = RequestMethod.POST)
-	public ModelAndView create(@Valid Item item, BindingResult result, @RequestParam("file") MultipartFile file,
-							   RedirectAttributes redirect) throws IOException {
-		if (result.hasErrors()) {
-			return new ModelAndView("items/form", "formErrors", result.getAllErrors());
-		}
-		if (file.isEmpty()) {
-			item.setImage("no-image.png");
-		}
-		else {
-			item.setImage(item.getName().hashCode()+".jpg");
-			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			Path path = Paths.get(UPLOAD_DIR + item.getName().hashCode()+".jpg");
-			File convFile = new File(file.getOriginalFilename());
-			convFile.createNewFile();
-			FileOutputStream fos = new FileOutputStream(convFile);
-			fos.write(file.getBytes());
-			fos.close();
-			BufferedImage image = ImageIO.read(convFile);
-			File output = new File(String.valueOf(path));
-			ImageIO.write(image, "jpg", output);
-		}
-		item = this.shopRepository.save(item);
-		redirect.addFlashAttribute("globalMessage", "Товар успешно создан");
-		return new ModelAndView("redirect:/{item.id}", "item.id", item.getId());
-	}
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    public ModelAndView create(@Valid Person person, BindingResult result,
+                               RedirectAttributes redirect) throws IOException {
+        if (person.getPhone() != null) {
+            if (this.shopRepository.findPerson(person) == null) {
+                redirect.addFlashAttribute("globalMessage", "Вы уже зарегистрированы.");
+                return new ModelAndView("redirect:/login");
+            } else {
+                Person registration = this.shopRepository.savePerson(person);
+                if (registration == null) {
+                    redirect.addFlashAttribute("globalMessage", "Пользователь с таким номером телефона уже зарегистрирован.");
+                    return new ModelAndView("redirect:/login");
+                } else {
+                    redirect.addFlashAttribute("globalMessage", "Вы успешно зарегистрированы.");
+                    return new ModelAndView("redirect:/login");
+                }
+            }
+        } else {
+            System.out.println(this.shopRepository.findPerson(person));
+            //Для Даримы
+            if (this.shopRepository.findPerson(person) == null) {
+                return new ModelAndView("redirect:/shop");
+            }
+            else {
+                redirect.addFlashAttribute("globalMessage", "Неверный email или пароль.");
+                return new ModelAndView("redirect:/login");
+            }
+        }
+    }
 
 
-	@RequestMapping("foo")
-	public String foo() {
-		throw new RuntimeException("Expected exception in controller");
-	}
+    @RequestMapping(params = "form", method = RequestMethod.POST)
+    public ModelAndView create(@Valid Item item, BindingResult result, @RequestParam("file") MultipartFile file,
+                               RedirectAttributes redirect) throws IOException {
+        if (result.hasErrors()) {
+            return new ModelAndView("items/form", "formErrors", result.getAllErrors());
+        }
+        if (file.isEmpty()) {
+            item.setImage("no-image.png");
+        } else {
+            item.setImage(item.getName().hashCode() + ".jpg");
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            Path path = Paths.get(UPLOAD_DIR + item.getName().hashCode() + ".jpg");
+            File convFile = new File(file.getOriginalFilename());
+            convFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(convFile);
+            fos.write(file.getBytes());
+            fos.close();
+            BufferedImage image = ImageIO.read(convFile);
+            File output = new File(String.valueOf(path));
+            ImageIO.write(image, "jpg", output);
+        }
+        item = this.shopRepository.save(item);
+        redirect.addFlashAttribute("globalMessage", "Товар успешно создан");
+        return new ModelAndView("redirect:/{item.id}", "item.id", item.getId());
+    }
+
+
+    @RequestMapping("foo")
+    public String foo() {
+        throw new RuntimeException("Expected exception in controller");
+    }
 
 }

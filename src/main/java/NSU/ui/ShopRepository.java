@@ -25,7 +25,9 @@ public interface ShopRepository {
 
 	Item save(Item item) throws IOException;
 
-	Item findItem(Long id);
+	Person findPerson(Person person);
 
     Person savePerson(Person person);
+
+	Item findItem(Long id);
 }
