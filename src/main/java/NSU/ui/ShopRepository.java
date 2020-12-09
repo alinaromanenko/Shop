@@ -21,6 +21,8 @@ import java.io.IOException;
  */
 public interface ShopRepository {
 
+	Person findPersonById(Long id);
+
 	Iterable<Item> findAll();
 
 	Item save(Item item) throws IOException;
@@ -29,5 +31,8 @@ public interface ShopRepository {
 
     Person savePerson(Person person);
 
+	Iterable<Item> findSellerItems(Person person);
+
 	Item findItem(Long id);
+
 }

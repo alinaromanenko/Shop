@@ -42,6 +42,13 @@ border-left: 2px solid white;
 margin-right:8px;
 }
 
+.layout{
+color: white;
+display: inline;
+margin-right:95%;
+}
+
+
 li:first-child {
 text-decoration: none;
 border: none;
@@ -348,4 +355,10 @@ width:100%
 display: inline;
 padding: 0px 15px 0px 15px;
 border-left: 2px solid white;
+}
+
+
+#invisible{
+visibility: hidden;
+position: absolute;
 }

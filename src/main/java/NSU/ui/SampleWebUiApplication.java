@@ -37,6 +37,7 @@ public class SampleWebUiApplication {
 		return new MySQLRespository();
 	}
 
+
 	@Bean
 	public Converter<String, Item> messageConverter() {
 		return new Converter<String, Item>() {

@@ -44,10 +44,26 @@ public class ItemController {
         return new ModelAndView("layout");
     }
 
-    @RequestMapping(value = "shop")
-    public ModelAndView list() {
-        Iterable<Item> items = this.shopRepository.findAll();
-        return new ModelAndView("items/list", "items", items);
+    @RequestMapping(value = "shop/{id}")
+    public ModelAndView list(@PathVariable("id") Long id) {
+        Person person = this.shopRepository.findPersonById(id);
+        if(person.getIsSeller().equals("false")){
+            Iterable<Item> items = this.shopRepository.findAll();
+            ModelAndView mav = new ModelAndView();
+            mav.setViewName("items/list");
+            mav.addObject("items", items);
+            mav.addObject("person", person);
+            return mav;
+        }
+        else {
+            Iterable<Item> items = this.shopRepository.findSellerItems(person);
+            ModelAndView mav = new ModelAndView();
+            mav.setViewName("items/list");
+            mav.addObject("items", items);
+            mav.addObject("person", person);
+            return mav;
+        }
+
     }
 
     @RequestMapping("{id}")
@@ -55,9 +71,10 @@ public class ItemController {
         return new ModelAndView("items/view", "item", item);
     }
 
-    @RequestMapping(params = "create", method = RequestMethod.GET)
-    public String createForm(@ModelAttribute Item item) {
-        return "items/form";
+    @RequestMapping(value = "create/{id}", method = RequestMethod.GET)
+    public ModelAndView createForm(@ModelAttribute Item item, @PathVariable("id") Long id) {
+        Person person = this.shopRepository.findPersonById(id);
+        return new ModelAndView("items/form", "person", person);
     }
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
@@ -69,7 +86,7 @@ public class ItemController {
     public ModelAndView create(@Valid Person person, BindingResult result,
                                RedirectAttributes redirect) throws IOException {
         if (person.getPhone() != null) {
-            if (this.shopRepository.findPerson(person) == null) {
+            if (this.shopRepository.findPerson(person) != null) {
                 redirect.addFlashAttribute("globalMessage", "Вы уже зарегистрированы.");
                 return new ModelAndView("redirect:/login");
             } else {
@@ -83,10 +100,9 @@ public class ItemController {
                 }
             }
         } else {
-            System.out.println(this.shopRepository.findPerson(person));
-            //Для Даримы
-            if (this.shopRepository.findPerson(person) == null) {
-                return new ModelAndView("redirect:/shop");
+            Person fullPerson = this.shopRepository.findPerson(person);
+            if ( fullPerson != null) {
+                return new ModelAndView("redirect:/shop/", "fullPerson.id", fullPerson.getId());
             }
             else {
                 redirect.addFlashAttribute("globalMessage", "Неверный email или пароль.");
@@ -96,7 +112,7 @@ public class ItemController {
     }
 
 
-    @RequestMapping(params = "form", method = RequestMethod.POST)
+    @RequestMapping(value = "form", method = RequestMethod.POST)
     public ModelAndView create(@Valid Item item, BindingResult result, @RequestParam("file") MultipartFile file,
                                RedirectAttributes redirect) throws IOException {
         if (result.hasErrors()) {
@@ -119,7 +135,7 @@ public class ItemController {
         }
         item = this.shopRepository.save(item);
         redirect.addFlashAttribute("globalMessage", "Товар успешно создан");
-        return new ModelAndView("redirect:/{item.id}", "item.id", item.getId());
+        return new ModelAndView("redirect:/shop/{item.sellerId}", "item.sellerId", item.getSellerId());
     }
 
 

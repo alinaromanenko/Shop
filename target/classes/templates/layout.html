@@ -10,28 +10,34 @@
 
 </head>
 <body>
+
+
 <div class="big-grid">
     <div class="navbar">
         <div class="container">
             <div class="navigate">
                 <ul class="layout-ul">
+                    <li class="layout" th:text="${person.firstName}">
+                    </li>
+                    <div th:if="${person.isSeller == 'true'}">
                     <li class="layout-li">
-                        <a th:href="@{/?create}" href="form.html" class="no-links">
+                        <a th:href="@{'/create/'+${person.id}}" href="form.html" class="no-links">
                             ДОБАВИТЬ ТОВАР
                         </a>
                     </li>
 
                     <li class="layout-li">
-                        <a th:href="@{/shop}" href="messages.html" class="no-links">
+                        <a th:href="@{'/shop/'+${person.id}}" href="messages.html" class="no-links">
                             МАГАЗИН
                         </a>
                     </li>
+                    </div>
                 </ul>
             </div>
         </div>
         <div class="line"></div>
     </div>
-    <div layout:fragment="content" >
+    <div layout:fragment="content">
         ЗДЕСЬ ПОКА НИЧЕГО НЕТ
     </div>
 
@@ -47,16 +53,23 @@
 
 </body>
 
-<script>
-        function readURL(input) {
+<script th:inline="javascript">
         /*<![CDATA[*/
+
+    document.getElementById("invisible").value=[[${person.id}]] ;
+    console.log([[${person.id}]]);
+
+
+
+        function readURL(input) {
+
 
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
                 $('#imageForm').attr('src', e.target.result);
-            }/*]]>*/
+
 
             reader.readAsDataURL(input.files[0]);
         }
@@ -66,5 +79,9 @@
 
         readURL(this);
     });
+
+
+    }/*]]>*/
+
 </script>
 </html>

@@ -27,7 +27,7 @@ public class MySQLRespository implements ShopRepository {
 
     public MySQLRespository() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop?useUnicode=true&characterEncoding=utf8", "root", "root");
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop?useUnicode=true&characterEncoding=utf8", "root", "pqypwz3v");
     }
 
     public void closeConnection() {
@@ -67,8 +67,8 @@ public class MySQLRespository implements ShopRepository {
 
     @Override
     public Item save(Item item) {
-        String query = "INSERT INTO `items`(`name`, `description`, `price`, `image`) VALUES ('" +
-                item.getName() + "', '" + item.getDescription() + "', '" + item.getPrice() + "', '" + item.getImage() + "')";
+        String query = "INSERT INTO `items`(`name`, `description`, `price`, `image`, `seller_id`) VALUES ('" +
+                item.getName() + "', '" + item.getDescription() + "', '" + item.getPrice() + "', '" + item.getImage() + "', '" + item.getSellerId() +"')";
         try (Statement st = con.createStatement()) {
             st.executeUpdate(query);
             query = "select max(id) from `items`";
@@ -110,20 +110,64 @@ public class MySQLRespository implements ShopRepository {
 
     @Override
     public Person findPerson(Person person) {
-        System.out.println(person.getEmail());
-        System.out.println(person.getPassword());
         String query = "select * from person where email='" + person.getEmail() + "' and password='" + person.getPassword() + "';";
         try (Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(query)) {
             if (rs.first()) {
-                return null;
+                Person fullPerson = new Person();
+                setPerson(rs, fullPerson);
+                return fullPerson;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return person;
+        return null;
     }
 
+
+    private void setPerson(ResultSet rs, Person person) throws SQLException {
+        person.setId(rs.getLong("id"));
+        person.setFirstName(rs.getString("first_name"));
+        person.setEmail(rs.getString("email"));
+        person.setPhone(rs.getString("phone"));
+        person.setPassword(rs.getString("password"));
+        person.setIsSeller(rs.getString("seller"));
+    }
+
+
+    @Override
+    public Person findPersonById(Long id) {
+        String query="SELECT * from person WHERE id='"+id+"'";
+        try (Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
+            if (rs.first()) {
+                Person fullPerson = new Person();
+                setPerson(rs, fullPerson);
+                return fullPerson;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Iterable<Item> findSellerItems(Person person) {
+        ArrayList<Item> items = new ArrayList<>();
+        String query = "Select * from `items` where seller_id = '" + person.getId() + "';";
+        try (Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
+            while (rs.next()) {
+                Item item = new Item();
+                setItem(rs, item);
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
+
+    }
 
     @Override
     public Item findItem(Long id) {

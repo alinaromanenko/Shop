@@ -39,6 +39,8 @@ public class Item {
 
 	private String image;
 
+	private Long sellerId;
+
 	private Calendar created = Calendar.getInstance();
 
 	public Long getId() {
@@ -84,4 +86,12 @@ public class Item {
 	public String getImage() { return this.image; }
 
 	public void setImage(String image) {this.image = image; }
+
+	public Long getSellerId() {
+		return sellerId;
+	}
+
+	public void setSellerId(Long sellerId) {
+		this.sellerId = sellerId;
+	}
 }
