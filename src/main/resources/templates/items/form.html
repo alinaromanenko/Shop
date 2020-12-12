@@ -36,14 +36,14 @@
                     </div>
                     <div class="price">
                         <label for="price">Цена</label>
-                        <input type="number"
+                        <input type="number" min="0"
                                th:field="*{price}"
                                th:class="${#fields.hasErrors('name')} ? 'field-error'"/>
                     </div>
                 </div>
                 <div class="grid-element">
                     <h3>НАЗВАНИЕ ТОВАРА</h3>
-                    <input id="name" type="text"
+                    <input th:required="required" id="name" type="text"
                            th:field="*{name}"
                            th:class="${#fields.hasErrors('name')} ? 'field-error'"/>
                     <h3>ОПИСАНИЕ ТОВАРА</h3>
@@ -51,7 +51,7 @@
                               th:field="*{description}"
                               th:class="${#fields.hasErrors('description')} ? 'field-error'"></textarea>
                     <div class="form-actions">
-                        <div class="buttons"><a href="list.html" th:href="@{shop}">
+                        <div class="buttons"><a href="list.html" th:href="@{/shop/}+${person.id}">
                             <div id="cancel-button">Отмена</div>
                         </a>
                             <div><input type="submit" id="save-button" value="Сохранить"/></div>

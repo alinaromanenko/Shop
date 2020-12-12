@@ -62,6 +62,7 @@ public class MySQLRespository implements ShopRepository {
         item.setDescription(rs.getString("description"));
         item.setPrice(rs.getInt("price"));
         item.setImage(rs.getString("image"));
+        item.setSellerId(rs.getLong("seller_id"));
     }
 
 
@@ -170,7 +171,30 @@ public class MySQLRespository implements ShopRepository {
     }
 
     @Override
+    public void delete(Item item){
+        System.out.println(item.getId());
+        String query="delete from items WHERE id='"+item.getId()+"'";
+        try (Statement st = con.createStatement();
+             ) {st.executeUpdate(query);}
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public Item findItem(Long id) {
+        String query = "Select * from `items` where id = '" + id+"'";
+        try (Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
+            Item item = new Item();
+            if (rs.next()) {
+                setItem(rs, item);
+                return item;
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

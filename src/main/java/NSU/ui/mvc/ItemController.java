@@ -66,9 +66,32 @@ public class ItemController {
 
     }
 
-    @RequestMapping("{id}")
-    public ModelAndView view(@PathVariable("id") Item item) {
-        return new ModelAndView("items/view", "item", item);
+    @RequestMapping(value = "shop/{id}", method = RequestMethod.POST)
+    public ModelAndView delete(@Valid Item item, BindingResult result, @PathVariable("id") Long id,
+                               RedirectAttributes redirect) throws IOException {
+
+        System.out.println(item.getId());
+        System.out.println(item.getName());
+        this.shopRepository.delete(item);
+        return new ModelAndView("redirect:/shop/{item.sellerId}", "item.sellerId", id);
+    }
+
+
+
+
+    @RequestMapping(value ="{sid}/{id}")
+    public ModelAndView view(@PathVariable("id") Item item, @PathVariable("sid") Long id) {
+        Person person = this.shopRepository.findPersonById(id);
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("item", item);
+        mav.addObject("person", person);
+        if (person.getIsSeller().equals("true")){
+            mav.setViewName("items/edit");
+        }
+        else {
+            mav.setViewName("items/view");
+        }
+        return mav;
     }
 
     @RequestMapping(value = "create/{id}", method = RequestMethod.GET)
@@ -102,7 +125,7 @@ public class ItemController {
         } else {
             Person fullPerson = this.shopRepository.findPerson(person);
             if ( fullPerson != null) {
-                return new ModelAndView("redirect:/shop/", "fullPerson.id", fullPerson.getId());
+                return new ModelAndView("redirect:/shop/{fullPerson.id}", "fullPerson.id", fullPerson.getId());
             }
             else {
                 redirect.addFlashAttribute("globalMessage", "Неверный email или пароль.");

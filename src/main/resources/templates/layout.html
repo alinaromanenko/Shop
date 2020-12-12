@@ -17,9 +17,7 @@
         <div class="container">
             <div class="navigate">
                 <ul class="layout-ul">
-                    <li class="layout" th:text="${person.firstName}">
-                    </li>
-                    <div th:if="${person.isSeller == 'true'}">
+                    <div th:if="${person.isSeller != 'false'}">
                     <li class="layout-li">
                         <a th:href="@{'/create/'+${person.id}}" href="form.html" class="no-links">
                             ДОБАВИТЬ ТОВАР
@@ -32,6 +30,15 @@
                         </a>
                     </li>
                     </div>
+                </ul>
+                <ul class="layoutul">
+                    <li class="layout" th:text="${person.firstName}">
+                    </li>
+                    <li class="layout">
+                        <a th:href="@{'/login'}" href="login.html" class="no-links">
+                            (ВЫЙТИ)
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -54,7 +61,7 @@
 </body>
 
 <script th:inline="javascript">
-        /*<![CDATA[*/
+
 
     document.getElementById("invisible").value=[[${person.id}]] ;
     console.log([[${person.id}]]);
@@ -63,14 +70,14 @@
 
         function readURL(input) {
 
-
+/*<![CDATA[*/
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
                 $('#imageForm').attr('src', e.target.result);
 
-
+}/*]]>*/
             reader.readAsDataURL(input.files[0]);
         }
     }
@@ -81,7 +88,7 @@
     });
 
 
-    }/*]]>*/
+
 
 </script>
 </html>

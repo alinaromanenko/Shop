@@ -11,32 +11,55 @@
           href="../../css/main.css"/>
 </head>
 <body>
-<div class="container">
-<div layout:fragment="content">
-    <div th:if="${items.empty}">
-    <div style="text-align:center;margin-top:150px;">
-        У ВАС ПОКА НЕТ ТОВАРОВ
-    </div>
-</div>
-    <div class="grid-container-shop">
 
-        <ul class="ul-free" th:each="item : ${items}" >
-            <div>
+<div class="container">
+    <div layout:fragment="content">
+        <div th:if="${items.empty}">
+            <div style="text-align:center;margin-top:150px;">
+                У ВАС ПОКА НЕТ ТОВАРОВ
+            </div>
+        </div>
+
+        <div class="grid-container-shop">
+            <ul class="ul-free" th:each="item : ${items}">
+
                 <div class="product-item">
                     <li>
-
                         <img th:src="@{${'/images/' + item.image}}"/>
                     </li>
-                    <li class="product-wrapper"> <h3 th:text="${item.name}"> </h3>
+                    <li class="product-wrapper">
+                        <h3><a href="view.html"
+                           th:href="@{'/' + ${person.id} +'/'+ ${item.id}}"
+                           th:text="${item.name}">
+                        </a></h3>
                     </li>
+
+
+
+
+                    <li th:if="${person.isSeller != 'false'}">
+                        <form th:object="${item}" th:action="@{/shop/}+${person.id}" method="post">
+                            <input id="inv" type="text" th:value="${item.id}"/>
+                            нужно как-то передать айдишник товара а не продавца
+                            <div class="form-actions">
+                                <input type="submit" id="cancel-button" value="Удалить"
+                                       style=" margin-right: auto; margin-left: auto;"/>
+                            </div>
+                        </form>
+                    </li>
+
+
+
                     <li class="price" th:text="${item.price}+' RUB'">
                     </li>
+                    <li th:text="${item.id}"></li>
                 </div>
-            </div>
-        </ul>
+
+            </ul>
         </div>
     </div>
 
 </div>
+
 </body>
 </html>

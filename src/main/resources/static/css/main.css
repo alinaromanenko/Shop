@@ -43,9 +43,16 @@ margin-right:8px;
 }
 
 .layout{
-color: white;
-display: inline;
-margin-right:95%;
+position: relative;
+display:inline-block;
+color: White;
+font-size:20px;}
+
+.layoutul{
+list-style-type: none;
+padding-left:100px;
+margin-top:-70px;
+
 }
 
 
