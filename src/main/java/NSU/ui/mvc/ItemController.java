@@ -44,7 +44,7 @@ public class ItemController {
         return new ModelAndView("layout");
     }
 
-    @RequestMapping(value = "shop/{id}")
+    @RequestMapping(value = "shop/{id}", method = RequestMethod.GET)
     public ModelAndView list(@PathVariable("id") Long id) {
         Person person = this.shopRepository.findPersonById(id);
         if(person.getIsSeller().equals("false")){
@@ -66,20 +66,19 @@ public class ItemController {
 
     }
 
-    @RequestMapping(value = "shop/{id}", method = RequestMethod.POST)
-    public ModelAndView delete(@Valid Item item, BindingResult result, @PathVariable("id") Long id,
-                               RedirectAttributes redirect) throws IOException {
-
-        System.out.println(item.getId());
-        System.out.println(item.getName());
+    @RequestMapping(value = "delete/{id}")
+    public ModelAndView delete(@PathVariable("id") Long id) {
+        Item item = this.shopRepository.findItem(id);
+        Long sellerId = item.getSellerId();
         this.shopRepository.delete(item);
-        return new ModelAndView("redirect:/shop/{item.sellerId}", "item.sellerId", id);
+        return new ModelAndView("redirect:/shop/{item.sellerId}", "item.sellerId", sellerId);
     }
 
 
 
 
-    @RequestMapping(value ="{sid}/{id}")
+
+    @RequestMapping(value ="shop/{sid}/{id}")
     public ModelAndView view(@PathVariable("id") Item item, @PathVariable("sid") Long id) {
         Person person = this.shopRepository.findPersonById(id);
         ModelAndView mav = new ModelAndView();
@@ -166,5 +165,6 @@ public class ItemController {
     public String foo() {
         throw new RuntimeException("Expected exception in controller");
     }
+
 
 }

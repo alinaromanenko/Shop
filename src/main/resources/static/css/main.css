@@ -369,3 +369,23 @@ border-left: 2px solid white;
 visibility: hidden;
 position: absolute;
 }
+
+#delete-button{
+-webkit-appearance: button;
+-moz-appearance: button;
+text-decoration: none;
+text-align: center;
+vertical-align: middle;
+border: 2px solid #F8BBE2;
+background-color: white;
+box-shadow: 3px 3px 5px #F8BBE2;
+width: 150px;
+height: 30px;
+font-size: 15px;
+color:black;
+cursor: pointer;
+}
+
+#delete-button a{
+color:black
+}

@@ -29,30 +29,20 @@
                     </li>
                     <li class="product-wrapper">
                         <h3><a href="view.html"
-                           th:href="@{'/' + ${person.id} +'/'+ ${item.id}}"
+                           th:href="@{'/shop/' + ${person.id} +'/'+ ${item.id}}"
                            th:text="${item.name}">
                         </a></h3>
                     </li>
-
-
-
-
                     <li th:if="${person.isSeller != 'false'}">
-                        <form th:object="${item}" th:action="@{/shop/}+${person.id}" method="post">
-                            <input id="inv" type="text" th:value="${item.id}"/>
-                            нужно как-то передать айдишник товара а не продавца
                             <div class="form-actions">
+                                <a th:href="@{/delete/}+${item.id}">
                                 <input type="submit" id="cancel-button" value="Удалить"
                                        style=" margin-right: auto; margin-left: auto;"/>
+                                </a>
                             </div>
-                        </form>
                     </li>
-
-
-
                     <li class="price" th:text="${item.price}+' RUB'">
                     </li>
-                    <li th:text="${item.id}"></li>
                 </div>
 
             </ul>
