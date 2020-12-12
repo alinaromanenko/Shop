@@ -1,0 +1,136 @@
+*{
+    font-family: "Courier New";
+}
+body{
+    background: PaleVioletRed;
+}
+.main-block {
+    background: GhostWhite;
+    height: 400px;
+    width: 550px;
+    border: 4px solid White;
+    margin-top:100px;
+    margin-left:35%;
+    position:fixed;
+    display:flex;
+    flex-direction:column;
+}
+.no-links[id=log] {
+text-decoration: underline;
+
+
+
+    padding: 10px -15px;
+    font-size: 14px;
+
+}
+.no-links[id=enter] {
+    text-decoration: none;
+    text-align: center;
+    padding: 10px 13px;
+    font-size: 14px;
+    font-weight:bold;
+
+
+}
+
+h1{
+color:White;
+margin-top:100px;}
+
+a{
+text-decoration: none;
+font-size:20px;
+color: black;
+}
+
+ul {
+list-style-type: none;
+text-align: right;
+
+padding-top: -10px;
+}
+
+li {
+display: inline;
+border-left: 2px solid black;
+margin-right:8px;
+}
+
+li:first-child {
+
+text-decoration: none;
+border: none;
+}
+
+#sign-up{
+display:none;
+}
+
+
+.alert{
+padding:40px 35px 8px 14px;
+margin-bottom:18px;
+color:White;
+text-shadow:0 1px 0
+rgba(255,255,255,0.5);
+background-color:#B0C4DE;
+border:1px solid #FFFACD;
+height:30px;
+width:540px;
+margin-top:50px;
+margin-left:35%;
+padding: 10px;
+text-align:center;
+margin-bottom:-30px;
+box-shadow: 3px 3px 5px LemonChiffon;
+}
+
+
+#invisible{
+visibility: hidden;
+position: absolute;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+
+input[type=number] {
+-moz-appearance:textfield;
+width:350px;
+margin-top:15px;
+margin-left:40px;
+height:25px;
+}
+
+input[type=text]{
+width:350px;
+margin-top:30px;
+margin-left:40px;
+height:25px;
+}
+input[type=email]{
+width:350px;
+margin-top:15px;
+margin-left:40px;
+height:25px;}
+input[type=password]{
+margin-top:15px;
+width:350px;
+margin-left:40px;
+height:25px;
+}
+
+input[type=checkbox]{
+margin-top:15px;
+margin-left:40px;
+height:25px;}
+
+input[type=submit]{
+margin-top:40px;
+margin-left:40%;
+background-color:HotPink;}
+
+
