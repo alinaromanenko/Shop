@@ -81,9 +81,11 @@ public class ItemController {
     @RequestMapping(value ="shop/{sid}/{id}")
     public ModelAndView view(@PathVariable("id") Item item, @PathVariable("sid") Long id) {
         Person person = this.shopRepository.findPersonById(id);
+        String name = this.shopRepository.findPersonById(item.getSellerId()).getFirstName();
         ModelAndView mav = new ModelAndView();
         mav.addObject("item", item);
         mav.addObject("person", person);
+        mav.addObject("sellerName", name);
         if (person.getIsSeller().equals("true")){
             mav.setViewName("items/edit");
         }
