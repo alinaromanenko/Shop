@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+
+<head>
+    <title>Корзина</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/main.css}"
+          href="../../css/main.css"/>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div th:if="${items.empty}">
+        <div style="text-align:center;margin-top:150px;">
+            У ВАС ПОКА НЕТ ТОВАРОВ
+        </div>
+    </div>
+
+    <div class="grid-container-shop">
+        <ul class="ul-free" th:each="item : ${items}">
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

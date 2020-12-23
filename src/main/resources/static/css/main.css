@@ -229,7 +229,7 @@ align-self: flex-end;
 background: #D77CEE;
 }
 
-#cancel-button{
+.cancel-button{
 -webkit-appearance: button;
 -moz-appearance: button;
 text-decoration: none;
@@ -247,7 +247,7 @@ margin-right: 10px;
 padding-top: 4px;
 }
 
-#cancel-button a{
+.cancel-button a{
 color:black
 }
 
@@ -387,5 +387,27 @@ cursor: pointer;
 }
 
 #delete-button a{
+color:black
+}
+
+.buy-button{
+-webkit-appearance: button;
+-moz-appearance: button;
+text-decoration: none;
+text-align: center;
+vertical-align: middle;
+border: 2px solid #F8BBE2;
+background-color: white;
+box-shadow: 3px 3px 5px #F8BBE2;
+width: 150px;
+height: 30px;
+font-size: 15px;
+color:black;
+cursor: pointer;
+margin-right: 10px;
+padding-top: 4px;
+}
+
+.buy-button a{
 color:black
 }

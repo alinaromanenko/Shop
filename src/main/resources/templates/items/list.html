@@ -36,10 +36,18 @@
                     <li th:if="${person.isSeller != 'false'}">
                             <div class="form-actions">
                                 <a th:href="@{/delete/}+${item.id}">
-                                <input type="submit" id="cancel-button" value="Удалить"
+                                <input type="submit" class="cancel-button" value="Удалить"
                                        style=" margin-right: auto; margin-left: auto;"/>
                                 </a>
                             </div>
+                    </li>
+                    <li th:if="${person.isSeller == 'false'}">
+                        <div class="form-actions">
+                            <a>
+                                <input type="submit" class="buy-button" value="КУПИТЬ"
+                                       style=" margin-right: auto; margin-left: auto;"/>
+                            </a>
+                        </div>
                     </li>
                     <li class="price" th:text="${item.price}+' RUB'">
                     </li>

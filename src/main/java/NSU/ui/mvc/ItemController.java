@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 /**
  * @author Rob Winch
@@ -73,8 +74,6 @@ public class ItemController {
         this.shopRepository.delete(item);
         return new ModelAndView("redirect:/shop/{item.sellerId}", "item.sellerId", sellerId);
     }
-
-
 
 
 
@@ -162,6 +161,61 @@ public class ItemController {
         return new ModelAndView("redirect:/shop/{item.sellerId}", "item.sellerId", item.getSellerId());
     }
 
+    @RequestMapping(value = "edit/{id}", method = RequestMethod.POST)
+    public ModelAndView edit(@Valid Item item, BindingResult result,
+                             RedirectAttributes redirect,  @RequestParam ("file") MultipartFile file) throws IOException {
+        if (result.hasErrors()) {
+            return new ModelAndView("items/edit", "formErrors", result.getAllErrors());
+        }
+        if (file.isEmpty()) {
+
+            item.setImage(this.shopRepository.findItem(item.getId()).getImage());
+        } else {
+            item.setImage(item.getName().hashCode() + ".jpg");
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            Path path = Paths.get(UPLOAD_DIR + item.getName().hashCode() + ".jpg");
+            File convFile = new File(file.getOriginalFilename());
+            convFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(convFile);
+            fos.write(file.getBytes());
+            fos.close();
+            BufferedImage image = ImageIO.read(convFile);
+            File output = new File(String.valueOf(path));
+            ImageIO.write(image, "jpg", output);
+        }
+        System.out.println(item.getName());
+        System.out.println(item.getPrice());
+        this.shopRepository.edit(item);
+
+        return new ModelAndView("redirect:/shop/{item.sellerId}", "item.sellerId", item.getSellerId());
+    }
+
+    @RequestMapping(value = "cart/{id}")
+    public ModelAndView cart(@ModelAttribute Item item, @PathVariable("id") Long id) {
+        Person person = this.shopRepository.findPersonById(id);
+        return new ModelAndView("items/cart", "person", person);
+    }
+
+    @RequestMapping(value = "history/{id}")
+    public ModelAndView history(@ModelAttribute Item item, @PathVariable("id") Long id) {
+        Person person = this.shopRepository.findPersonById(id);
+        return new ModelAndView("items/history", "person", person);
+    }
+
+    @RequestMapping(value = "adding/{id}/{items}")
+    public ModelAndView adding(@PathVariable("id") Long id, @PathVariable("items") String items) {
+        System.out.println(items);
+        ArrayList<Item> cart = new ArrayList<>();
+        for(String ids:items.split(";")){
+            cart.add(this.shopRepository.findItem(Long.parseLong(ids)));
+        }
+        Person person = this.shopRepository.findPersonById(id);
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("items", cart);
+        mav.addObject("person", person);
+        mav.setViewName("items/cart");
+        return mav;
+    }
 
     @RequestMapping("foo")
     public String foo() {

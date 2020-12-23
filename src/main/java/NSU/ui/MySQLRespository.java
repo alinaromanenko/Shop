@@ -197,4 +197,16 @@ public class MySQLRespository implements ShopRepository {
         }
         return null;
     }
+
+    @Override
+    public void edit(Item item){
+        System.out.println("price");
+        System.out.println(item.getPrice());
+        try (Statement st = con.createStatement();) {
+            st.executeUpdate("update items set name= '" + item.getName()+"', description= '" + item.getDescription() +"', price='" + item.getPrice() +"', image='" + item.getImage() +"', seller_id='" + item.getSellerId() +"' where id='"+item.getId()+"'");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -36,4 +36,6 @@ public interface ShopRepository {
 	Item findItem(Long id);
 
 	void delete (Item item);
+
+	void edit(Item item);
 }

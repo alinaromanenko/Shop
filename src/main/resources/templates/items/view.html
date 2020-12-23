@@ -35,9 +35,13 @@
 
 
     <div class="form-actions">
-      <div class="buttons"><a href="list.html" th:href="@{/shop/}+${person.id}">
-        <div id="cancel-button" >НАЗАД</div>
+      <div class="buttons">
+        <a href="list.html" th:href="@{/shop/}+${person.id}">
+        <div class="cancel-button" >НАЗАД</div>
       </a>
+        <a>
+          <div class="cancel-button" id="buy">КУПИТЬ</div>
+        </a>
       </div>
     </div>
   </div>

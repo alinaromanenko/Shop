@@ -19,24 +19,41 @@
             <div class="navigate">
                 <ul class="layout-ul">
                     <div th:if="${person.isSeller != 'false'}">
-                    <li class="layout-li">
-                        <a th:href="@{'/create/'+${person.id}}" href="form.html" class="no-links">
-                            ДОБАВИТЬ ТОВАР
-                        </a>
-                    </li>
+                        <li class="layout-li">
+                            <a th:href="@{'/create/'+${person.id}}" href="form.html" class="no-links">
+                                ДОБАВИТЬ ТОВАР
+                            </a>
+                        </li>
 
-                    <li class="layout-li">
-                        <a th:href="@{'/shop/'+${person.id}}" href="messages.html" class="no-links">
-                            МАГАЗИН
-                        </a>
-                    </li>
+                        <li class="layout-li">
+                            <a th:href="@{'/shop/'+${person.id}}" href="list.html" class="no-links">
+                                МАГАЗИН
+                            </a>
+                        </li>
+                    </div>
+                    <div th:if="${person.isSeller == 'false'}">
+                        <li class="layout-li">
+                            <a th:href="@{'/shop/'+${person.id}}" href="list.html" class="no-links">
+                                МАГАЗИН
+                            </a>
+                        </li>
+                        <li class="layout-li">
+                            <a th:href="@{'/history/'+${person.id}}" href="history.html" class="no-links">
+                                ИСТОРИЯ ЗАКАЗОВ
+                            </a>
+                        </li>
+                        <li class="layout-li">
+                            <a id="cart" href="#" class="no-links">
+                                КОРЗИНА
+                            </a>
+                        </li>
                     </div>
                 </ul>
                 <ul class="layoutul">
                     <li class="layout" th:text="${person.firstName}">
                     </li>
                     <li class="layout">
-                        <a th:href="@{'/login'}" href="login.html" class="no-links">
+                        <a th:href="@{'/login'}" href="login.html" class="no-links" id="exit">
                             (ВЫЙТИ)
                         </a>
                     </li>
@@ -46,39 +63,74 @@
         <div class="line"></div>
     </div>
     <div layout:fragment="content">
-        ЗДЕСЬ ПОКА НИЧЕГО НЕТ
+        <div style="text-align:center;margin-top:150px;">
+            ЗДЕСЬ ПОКА НИЧЕГО НЕТ
+        </div>
     </div>
 
-<!--    <div id="footer" style="flex: 0 0 auto;">-->
-<!--        <ul class="girls-ul">-->
-<!--        <li class="girls-li"> &copy;   Анастасия Близняк </li>-->
-<!--        <li class="girls-li"> Дарима Жамбаема </li>-->
-<!--        <li class="girls-li"> Анастасия Зеленская </li>-->
-<!--        <li class="girls-li"> Романенко Алина </li>-->
-<!--    </ul>-->
-<!--    </div>-->
+    <!--    <div id="footer" style="flex: 0 0 auto;">-->
+    <!--        <ul class="girls-ul">-->
+    <!--        <li class="girls-li"> &copy;   Анастасия Близняк </li>-->
+    <!--        <li class="girls-li"> Дарима Жамбаема </li>-->
+    <!--        <li class="girls-li"> Анастасия Зеленская </li>-->
+    <!--        <li class="girls-li"> Романенко Алина </li>-->
+    <!--    </ul>-->
+    <!--    </div>-->
 </div>
 
 </body>
 
-<script th:inline="javascript">
+<script th:inline="javascript" type="text/javascript">
 
+    let buttons = document.getElementsByClassName("buy-button");
+      /*<![CDATA[*/
+    for(let i = 0; i<buttons.length; i++){
+        buttons[i].onclick = function(){
+        items=[[${items}]];
+        console.log(items[i]);
+        if(localStorage.getItem("cart")===null){
+        cart=[];
+        }
+        else{
+        cart=localStorage.getItem("cart").split(";");
+        }
+        cart.push(items[i].id);
+        localStorage.setItem("cart",cart.join(";"));
 
-    document.getElementById("invisible").value=[[${person.id}]] ;
+        }
+
+    }
+    /*]]>*/
+
+    document.getElementById("exit").onclick=function(){
+    localStorage.removeItem("cart");
+    }
+
+    document.getElementById("buy").onclick=function(){
+    item=[[${item.id}]];
+    if(localStorage.getItem("cart")===null){
+        cart=[];
+        }
+        else{
+        cart=localStorage.getItem("cart").split(";");
+        }
+        cart.push(item);
+        localStorage.setItem("cart",cart.join(";"));
+        alert("Товар добавлен в корзину!");
+    }
+    document.getElementById("invisible").value=[[${person.id}]];
     console.log([[${person.id}]]);
 
+    function readURL(input) {
 
-
-        function readURL(input) {
-
-/*<![CDATA[*/
+    /*<![CDATA[*/
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
                 $('#imageForm').attr('src', e.target.result);
 
-}/*]]>*/
+    }/*]]>*/
             reader.readAsDataURL(input.files[0]);
         }
     }
@@ -87,6 +139,7 @@
 
         readURL(this);
     });
+
 
 
 
