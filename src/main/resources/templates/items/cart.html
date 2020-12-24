@@ -18,10 +18,19 @@
             У ВАС ПОКА НЕТ ТОВАРОВ
         </div>
     </div>
-
+    <div th:if="${!items.empty}">
     <div class="grid-container-shop">
         <ul class="ul-free" th:each="item : ${items}">
+            <li th:text="${item.name}"> </li>
+            <li th:text="${item.price}"> </li>
         </ul>
+        <br/>
+        <p>СУММА</p>
+        <p th:text="${total}"> </p>
+    </div>
+        <a th:href="@{'/adding/'+${person.id}+'/null'}"  id="clean">
+            Очистить корзину
+        </a>
     </div>
 </div>
 

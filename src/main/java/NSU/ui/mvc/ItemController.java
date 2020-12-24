@@ -190,31 +190,39 @@ public class ItemController {
         return new ModelAndView("redirect:/shop/{item.sellerId}", "item.sellerId", item.getSellerId());
     }
 
-    @RequestMapping(value = "cart/{id}")
-    public ModelAndView cart(@ModelAttribute Item item, @PathVariable("id") Long id) {
-        Person person = this.shopRepository.findPersonById(id);
-        return new ModelAndView("items/cart", "person", person);
-    }
-
     @RequestMapping(value = "history/{id}")
     public ModelAndView history(@ModelAttribute Item item, @PathVariable("id") Long id) {
         Person person = this.shopRepository.findPersonById(id);
         return new ModelAndView("items/history", "person", person);
     }
 
-    @RequestMapping(value = "adding/{id}/{items}")
-    public ModelAndView adding(@PathVariable("id") Long id, @PathVariable("items") String items) {
-        System.out.println(items);
-        ArrayList<Item> cart = new ArrayList<>();
-        for(String ids:items.split(";")){
-            cart.add(this.shopRepository.findItem(Long.parseLong(ids)));
-        }
+    @RequestMapping(value = "cart")
+    public ModelAndView cart(@ModelAttribute("cart") ArrayList<Item> cart, @ModelAttribute("id") Long id) {
         Person person = this.shopRepository.findPersonById(id);
+        Long total = 0L;
+        for(Item item:cart){
+            total+=item.getPrice();
+        }
         ModelAndView mav = new ModelAndView();
+        mav.addObject("total", total);
         mav.addObject("items", cart);
         mav.addObject("person", person);
         mav.setViewName("items/cart");
         return mav;
+    }
+
+
+    @RequestMapping(value = "/adding/{id}/{items}")
+    public String adding(@PathVariable("id") Long id, @PathVariable("items") String items, final RedirectAttributes redirectAttributes) {
+        ArrayList<Item> cart = new ArrayList<>();
+        if (!items.equals("null")) {
+            for (String ids : items.split("q")) {
+                cart.add(this.shopRepository.findItem(Long.parseLong(ids)));
+            }
+        }
+        redirectAttributes.addFlashAttribute("cart", cart);
+        redirectAttributes.addFlashAttribute("id",id);
+        return "redirect:/cart";
     }
 
     @RequestMapping("foo")

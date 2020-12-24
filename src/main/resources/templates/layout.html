@@ -43,7 +43,7 @@
                             </a>
                         </li>
                         <li class="layout-li">
-                            <a id="cart" href="#" class="no-links">
+                            <a id="cart" href="" class="no-links">
                                 КОРЗИНА
                             </a>
                         </li>
@@ -80,11 +80,14 @@
 
 </body>
 
-<script th:inline="javascript" type="text/javascript">
-
-    let buttons = document.getElementsByClassName("buy-button");
-      /*<![CDATA[*/
+<script th:inline="javascript">
+/*<![CDATA[*/
+if([[${person.isSeller}]]==='false'){
+/*]]>*/
+let buttons = document.getElementsByClassName("buy-button");
+    /*<![CDATA[*/
     for(let i = 0; i<buttons.length; i++){
+    /*]]>*/
         buttons[i].onclick = function(){
         items=[[${items}]];
         console.log(items[i]);
@@ -92,45 +95,56 @@
         cart=[];
         }
         else{
-        cart=localStorage.getItem("cart").split(";");
+        cart=localStorage.getItem("cart").split("q");
         }
         cart.push(items[i].id);
-        localStorage.setItem("cart",cart.join(";"));
-
+        localStorage.setItem("cart",cart.join("q"));
+        alert("Товар добавлен в корзину!");
         }
-
     }
-    /*]]>*/
 
     document.getElementById("exit").onclick=function(){
     localStorage.removeItem("cart");
     }
+    if(document.getElementById("clean")){
+    document.getElementById("clean").onclick=function(){
+    localStorage.removeItem("cart");
+    }
+    }
 
+if(document.getElementById("buy")){
     document.getElementById("buy").onclick=function(){
-    item=[[${item.id}]];
+    it = [[${item}]]
+    item = it.id;
+
     if(localStorage.getItem("cart")===null){
         cart=[];
         }
         else{
-        cart=localStorage.getItem("cart").split(";");
+        cart=localStorage.getItem("cart").split("q");
         }
         cart.push(item);
-        localStorage.setItem("cart",cart.join(";"));
+        localStorage.setItem("cart",cart.join("q"));
         alert("Товар добавлен в корзину!");
     }
+}
+var link = document.getElementById("cart");
+    link.setAttribute("href", '/adding/'+[[${person.id}]]+'/'+localStorage.getItem("cart"));
+}
+
     document.getElementById("invisible").value=[[${person.id}]];
     console.log([[${person.id}]]);
 
     function readURL(input) {
 
-    /*<![CDATA[*/
+/*<![CDATA[*/
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
                 $('#imageForm').attr('src', e.target.result);
 
-    }/*]]>*/
+}/*]]>*/
             reader.readAsDataURL(input.files[0]);
         }
     }
@@ -139,7 +153,6 @@
 
         readURL(this);
     });
-
 
 
 
